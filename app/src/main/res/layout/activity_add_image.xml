@@ -4,30 +4,166 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activities.AddImageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/top_app_bar"
+            style="@style/Widget.AppCompat.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:logo="@drawable/ic_cryptography"
-            app:title="@string/app_name"
-            style="@style/Widget.AppCompat.Toolbar"
-            />
+            app:title="Add an image" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginRight="16dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_encrypt_algorithm"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/aes_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aes" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/rsa_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rsa" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/des_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/des" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/hash_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hash" />
+
+            <RadioGroup
+                android:id="@+id/hash_select_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/md5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/md5" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/sha1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sha1" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/sha512"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sha512" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/preview_panel_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/preview"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/preview_iv"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/confirm_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/upload_btn_background"
+                    android:drawableStart="@drawable/ic_confirm"
+                    android:drawableLeft="@drawable/ic_confirm"
+                    android:drawablePadding="4dp"
+                    android:elevation="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/confirm"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    tools:targetApi="lollipop" />
+
+                <Button
+                    android:id="@+id/upload_image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/upload_btn_background"
+                    android:drawableStart="@drawable/ic_upload"
+                    android:drawableLeft="@drawable/ic_upload"
+                    android:drawablePadding="4dp"
+                    android:elevation="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/load_from_file"
+                    android:textAllCaps="false"
+                    android:visibility="visible"
+                    tools:targetApi="lollipop" />
+            </LinearLayout>
 
 
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

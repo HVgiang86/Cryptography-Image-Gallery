@@ -1,11 +1,11 @@
 package com.vcs.svtt.cryptographygallery.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +18,7 @@ import androidx.loader.content.Loader
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vcs.svtt.cryptographygallery.R
 import com.vcs.svtt.cryptographygallery.adapter.ImageGalleryAdapter
+import com.vcs.svtt.cryptographygallery.fragments.ViewImageFragment
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -36,29 +37,37 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportLoaderManager.initLoader(IMAGE_LOADER_ID, null, this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.top_app_bar)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener {
-            openAddImageActivity()
-        }
 
         //ask for external storage permission
         if (shouldAskPermissions()) {
             askPermissions()
         }
 
+        //supportLoaderManager.initLoader(IMAGE_LOADER_ID, null, this)
+
+        fab.setOnClickListener {
+            openAddImageActivity()
+        }
+
         Log.d(TAG, "loaded ${listOfAllImages.size} image(s)")
         listOfAllImages.forEach { e -> Log.d(TAG, "image $e") }
+
+
+        gia_lap.setOnClickListener {
+            val fragment = ViewImageFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.view_image_fragment, fragment)
+                .addToBackStack(null).commit()
+        }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_action_bar_menu,menu)
+        menuInflater.inflate(R.menu.main_action_bar_menu, menu)
         return true
     }
 
@@ -79,10 +88,11 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
             else -> return false
         }
+
     }
 
     private fun openAddImageActivity() {
-        val intent = Intent(this,AddImageActivity::class.java)
+        val intent = Intent(this, AddImageActivity::class.java)
         startActivityForResult(intent, ADD_IMAGE_REQUEST_CODE)
     }
 
@@ -92,11 +102,12 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     private fun calculateSpanCount(): Int {
         val width = getDeviceWidth()
-        val span = (width / 136).toInt()
+        val span = ((width + 3 - 8) / 123).toInt()
         Log.d(TAG, "width: $width; span: $span")
         return span
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun prepareRecyclerView() {
         val imageList = ImageManager.getInstance().getList()
         imageList.clear()
@@ -109,6 +120,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         val layoutManager = GridLayoutManager(this, calculateSpanCount())
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateLoader(p0: Int, p1: Bundle?): Loader<Cursor> {

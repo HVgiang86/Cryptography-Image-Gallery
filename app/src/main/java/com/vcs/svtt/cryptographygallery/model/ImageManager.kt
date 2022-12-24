@@ -20,14 +20,18 @@ class ImageManager private constructor(){
     fun addAList(pathList: ArrayList<String>) {
         pathList.forEach {
             s ->
-            var path = s.substring(s.indexOf("/"))
-            var fileName = s.substring(s.lastIndexOf("/")+1)
-            var image = Image(fileName,path,false,"")
+            val path = s.substring(s.indexOf("/"))
+            val fileName = s.substring(s.lastIndexOf("/")+1)
+            val image = Image(fileName,path)
             imageList.add(image)
         }
     }
 
     fun getList(): ArrayList<Image> {
         return imageList
+    }
+
+    fun clearList() {
+        imageList.clear()
     }
 }

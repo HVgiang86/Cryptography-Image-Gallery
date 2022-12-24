@@ -7,4 +7,23 @@
     <string name="show_as_list">Show as list</string>
     <string name="delete_selected_image">delete selected image</string>
     <string name="galley_encrypted_image_notice">Below images have encrypted by one of installed cryptography algorithm. Click to each image to view encrypted content!</string>
+    <string name="choose_encrypt_algorithm">Choose Encrypt Algorithm</string>
+    <string name="aes">AES</string>
+    <string name="rsa">RSA</string>
+    <string name="des">DES</string>
+    <string name="hash">Hàm băm</string>
+    <string name="md5">MD5</string>
+    <string name="sha1">SHA1</string>
+    <string name="sha512">SHA512</string>
+    <string name="load_from_file">Load From File</string>
+    <string name="preview">Preview</string>
+    <string name="confirm">Confirm</string>
+    <string name="clear">clear</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="show_encrypted_content">Show Encrypted Content</string>
+    <string name="show_encrypted_file">Show encrypted file</string>
+    <string name="show_image">Show image</string>
+    <string name="encrypted_content_note">Below is encrypted content as Base64 text</string>
+    <string name="view_full_image_note">This is big-size image view</string>
 </resources>

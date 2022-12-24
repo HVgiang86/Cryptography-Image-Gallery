@@ -1,51 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
-    android:theme="@style/ThemeOverlay.CryptographyGallery.FullscreenContainer"
+    android:fitsSystemWindows="true"
     tools:context=".fragments.ViewImageFragment">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <androidx.appcompat.widget.Toolbar
+        style="@style/Widget.AppCompat.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple"
         android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="?attr/fullscreenTextColor"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:minHeight="?attr/actionBarSize"
+        app:titleMarginStart="16dp"
+        app:logo="@drawable/ic_cryptography"
+        app:title="View Image"
+        tools:titleMarginStart="16dp"
+        />
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="@style/Widget.Theme.CryptographyGallery.ButtonBar.Fullscreen"
+        <TextView
+            android:id="@+id/show_image_note_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="@string/encrypted_content_note"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/show_encrypted_content_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:background="@drawable/default_btn_background"
+            android:drawableStart="@drawable/ic_encrypted"
+            android:drawableLeft="@drawable/ic_encrypted"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="@string/show_encrypted_content" />
+
+        <Button
+            android:id="@+id/show_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:background="@drawable/default_btn_background"
+            android:drawableStart="@drawable/ic_image"
+            android:drawableLeft="@drawable/ic_image"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="@string/show_image"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/show_encrypted_file_content_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/default_btn_background"
+            android:drawableStart="@drawable/ic_file"
+            android:drawableLeft="@drawable/ic_file"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="@string/show_encrypted_file"
+            android:visibility="gone"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/algorithm_picker_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button
-                android:id="@+id/dummy_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
+                android:text="@string/choose_encrypt_algorithm"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp" />
 
-        </LinearLayout>
-    </FrameLayout>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/algorithm_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-</FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
