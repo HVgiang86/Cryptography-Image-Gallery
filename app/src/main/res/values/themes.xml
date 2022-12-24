@@ -1,15 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CryptographyGallery" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.CryptographyGallery" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryDark">@color/purple_dark</item>
+        <item name="colorAccent">@color/light_green_dark</item>
+        <item name="colorSecondary">@color/light_green</item>
+        <item name="colorSecondaryVariant">@color/light_green_light</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="ThemeOverlay.CryptographyGallery.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+        <item name="fullscreenBackgroundColor">@color/light_green_dark</item>
+        <item name="fullscreenTextColor">@color/light_green</item>
     </style>
 </resources>

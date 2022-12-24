@@ -3,4 +3,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="loading">Loading</string>
+    <string name="add_image">add image</string>
+    <string name="show_as_list">Show as list</string>
+    <string name="delete_selected_image">delete selected image</string>
+    <string name="galley_encrypted_image_notice">Below images have encrypted by one of installed cryptography algorithm. Click to each image to view encrypted content!</string>
 </resources>

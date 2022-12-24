@@ -12,4 +12,15 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="lime">#c0ca33</color>
+    <color name="lime_light">#f5fd67</color>
+    <color name="lime_dark">#8c9900</color>
+    <color name="purple">#ab47bc</color>
+    <color name="purple_light">#df78ef</color>
+    <color name="purple_dark">#790e8b</color>
+    <color name="light_green">#9ccc65</color>
+    <color name="light_green_light">#cfff95</color>
+    <color name="light_green_dark">#6b9b37</color>
+    <color name="default_secondary">@color/light_green</color>
+    <color name="default_primary">@color/purple</color>
 </resources>

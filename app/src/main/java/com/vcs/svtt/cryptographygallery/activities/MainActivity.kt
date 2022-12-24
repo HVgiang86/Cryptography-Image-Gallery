@@ -1,10 +1,14 @@
 package com.vcs.svtt.cryptographygallery.activities
 
+import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +20,16 @@ import com.vcs.svtt.cryptographygallery.R
 import com.vcs.svtt.cryptographygallery.adapter.ImageGalleryAdapter
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
+
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     companion object {
+
         const val TAG = "CRYPTOGRAPHY APP"
         private const val IMAGE_LOADER_ID = 1
+        const val ADD_IMAGE_REQUEST_CODE = 101
     }
 
     private var listOfAllImages = ArrayList<String>()
@@ -29,8 +37,15 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         supportLoaderManager.initLoader(IMAGE_LOADER_ID, null, this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.top_app_bar)
+        setSupportActionBar(toolbar)
+
+        fab.setOnClickListener {
+            openAddImageActivity()
+        }
 
         //ask for external storage permission
         if (shouldAskPermissions()) {
@@ -42,16 +57,56 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     }
 
-    private fun prepareRecyclerView() {
-        ImageManager.getInstance().addAList(listOfAllImages)
-        val imageList = ImageManager.getInstance().getList()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_action_bar_menu,menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_menu -> {
+                openAddImageActivity()
+                return true
+            }
+
+            R.id.delete_menu -> {
+                return true
+            }
+
+            R.id.show_as_list_menu -> {
+                return true
+            }
+
+            else -> return false
+        }
+    }
+
+    private fun openAddImageActivity() {
+        val intent = Intent(this,AddImageActivity::class.java)
+        startActivityForResult(intent, ADD_IMAGE_REQUEST_CODE)
+    }
+
+    private fun getDeviceWidth(): Float {
+        return resources.displayMetrics.run { widthPixels / density }
+    }
+
+    private fun calculateSpanCount(): Int {
+        val width = getDeviceWidth()
+        val span = (width / 136).toInt()
+        Log.d(TAG, "width: $width; span: $span")
+        return span
+    }
+
+    private fun prepareRecyclerView() {
+        val imageList = ImageManager.getInstance().getList()
+        imageList.clear()
+        ImageManager.getInstance().addAList(listOfAllImages)
         imageList.forEach { i ->
             Log.d(TAG, "image name: ${i.fileName}\nimage path: ${i.rawFilePath}")
         }
 
         val adapter = ImageGalleryAdapter(this, imageList, false)
-        val layoutManager = GridLayoutManager(this, 4)
+        val layoutManager = GridLayoutManager(this, calculateSpanCount())
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = adapter
     }
