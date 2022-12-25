@@ -1,18 +1,18 @@
 package com.vcs.svtt.cryptographygallery.model
 
 data class Image(val fileName: String, val rawFilePath: String) {
-    private var aes = false
-    private var des = false
-    private var rsa = false
-    private var md5 = false
-    private var sha1 = false
-    private var SHA512 = false
+    var aes = false
+    var des = false
+    var rsa = false
+    var md5 = false
+    var sha1 = false
+    var sha512 = false
     var aesFilePath = ""
     var desFilePath = ""
     var rsaFilePath = ""
     var md5FilePath = ""
     var sha1FilePath = ""
-    var SHA512FilePath = ""
+    var sha512FilePath = ""
 
     fun setAES(encryptedFilePath: String) {
         aes = true
@@ -40,7 +40,7 @@ data class Image(val fileName: String, val rawFilePath: String) {
     }
 
     fun setSHA512(encryptedFilePath: String) {
-        SHA512 = true
-        SHA512FilePath = encryptedFilePath
+        sha512 = true
+        sha512FilePath = encryptedFilePath
     }
 }

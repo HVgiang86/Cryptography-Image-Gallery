@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.vcs.svtt.cryptographygallery.R
 import com.vcs.svtt.cryptographygallery.cryptography.CryptographyHelper
+import com.vcs.svtt.cryptographygallery.model.EncryptedImagePreferences
 import com.vcs.svtt.cryptographygallery.model.Image
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import com.vcs.svtt.cryptographygallery.utils.PathUtil
@@ -183,6 +184,10 @@ class AddImageActivity : AppCompatActivity() {
 
         Log.d(TAG, "Algorithm: $selectedAlgorithm")
         CryptographyHelper.encrypt(image, selectedAlgorithm)
+
+        //save encrypted images list to shared preferences
+        val prefs = EncryptedImagePreferences(this)
+        prefs.save()
 
         Toast.makeText(this,"Encrypt your photo successfully!",Toast.LENGTH_SHORT).show()
         setResult(RESULT_OK)

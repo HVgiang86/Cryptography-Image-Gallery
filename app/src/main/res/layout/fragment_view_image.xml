@@ -34,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:text="@string/encrypted_content_note"
             android:textColor="@color/black"
@@ -87,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -107,7 +109,25 @@
                 android:layout_marginStart="8dp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/encrypted_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

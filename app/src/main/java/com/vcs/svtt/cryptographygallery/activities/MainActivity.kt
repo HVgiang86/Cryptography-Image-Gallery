@@ -2,23 +2,20 @@ package com.vcs.svtt.cryptographygallery.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import androidx.recyclerview.widget.GridLayoutManager
+import com.andrognito.pinlockview.PinLockListener
+import com.andrognito.pinlockview.PinLockView
 import com.vcs.svtt.cryptographygallery.R
 import com.vcs.svtt.cryptographygallery.adapter.ImageGalleryAdapter
 import com.vcs.svtt.cryptographygallery.fragments.ViewImageFragment
+import com.vcs.svtt.cryptographygallery.model.EncryptedImagePreferences
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -27,12 +24,11 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(){
     companion object {
-
         const val TAG = "CRYPTOGRAPHY APP"
         const val ADD_IMAGE_REQUEST_CODE = 101
     }
 
-    private var listOfAllImages = ArrayList<String>()
+    private lateinit var adapter: ImageGalleryAdapter
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,25 +46,21 @@ class MainActivity : AppCompatActivity(){
             openAddImageActivity()
         }
 
-        Log.d(TAG, "loaded ${listOfAllImages.size} image(s)")
-        listOfAllImages.forEach { e -> Log.d(TAG, "image $e") }
-
-
-        gia_lap.setOnClickListener {
-            val fragment = ViewImageFragment.newInstance()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.view_image_fragment, fragment)
-                .addToBackStack(null).commit()
-        }
+        //load encrypted images list from shared preferences
+        val prefs = EncryptedImagePreferences(this)
+        prefs.load()
 
         prepareRecyclerView()
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            prepareRecyclerView()
+            adapter.notifyDataSetChanged()
+            Log.d(TAG,"List changed")
+            ImageManager.getInstance().getList().forEach { i ->
+                Log.d(TAG,"image: path ${i.rawFilePath}")
+            }
         }
     }
 
@@ -116,13 +108,8 @@ class MainActivity : AppCompatActivity(){
     @SuppressLint("NotifyDataSetChanged")
     private fun prepareRecyclerView() {
         val imageList = ImageManager.getInstance().getList()
-        imageList.clear()
-        ImageManager.getInstance().addAList(listOfAllImages)
-        imageList.forEach { i ->
-            Log.d(TAG, "image name: ${i.fileName}\nimage path: ${i.rawFilePath}")
-        }
 
-        val adapter = ImageGalleryAdapter(this, imageList, false)
+        adapter = ImageGalleryAdapter(this, imageList)
         val layoutManager = GridLayoutManager(this, calculateSpanCount())
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = adapter
@@ -156,9 +143,5 @@ class MainActivity : AppCompatActivity(){
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

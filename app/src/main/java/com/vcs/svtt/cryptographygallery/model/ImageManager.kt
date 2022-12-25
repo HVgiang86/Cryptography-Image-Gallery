@@ -1,6 +1,8 @@
 package com.vcs.svtt.cryptographygallery.model
 
 class ImageManager private constructor(){
+    private var imageList: ArrayList<Image> = ArrayList()
+
     init {
         // define in constructor
     }
@@ -15,7 +17,7 @@ class ImageManager private constructor(){
     }
 
 
-    private var imageList: ArrayList<Image> = ArrayList()
+
 
     fun addAList(pathList: ArrayList<String>) {
         pathList.forEach {
@@ -37,5 +39,9 @@ class ImageManager private constructor(){
 
     fun clearList() {
         imageList.clear()
+    }
+
+    fun removeImage(position: Int) {
+        imageList.removeAt(position)
     }
 }

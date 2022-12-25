@@ -67,15 +67,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/content_container" />
 
-        <Button
-            android:id="@+id/gia_lap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="50dp"
-            android:text="Gia lap"
-            app:layout_constraintLeft_toLeftOf="@id/content_container"
-            app:layout_constraintTop_toTopOf="@id/content_container" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             style="@style/Widget.Design.FloatingActionButton"
@@ -94,12 +85,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="ContentDescription" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/view_image_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
