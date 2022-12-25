@@ -1,10 +1,12 @@
 package com.vcs.svtt.cryptographygallery.activities
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
@@ -22,6 +24,7 @@ import com.vcs.svtt.cryptographygallery.fragments.ViewImageFragment
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import java.io.File
 
 
 @Suppress("DEPRECATION")
@@ -46,6 +49,14 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         if (shouldAskPermissions()) {
             askPermissions()
         }
+
+        /*val directory = File("/storage/emulated/0/Download/Cryptography gallery")
+        if (!directory.exists()) {
+            val values = ContentValues()
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/Cryptography gallery/")
+            contentResolver.insert(MediaStore.Files.getContentUri("external"), values)
+        }*/
+
 
         //supportLoaderManager.initLoader(IMAGE_LOADER_ID, null, this)
 
@@ -175,6 +186,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         val permissions = arrayOf(
             "android.permission.MANAGE_EXTERNAL_STORAGE",
             "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"
         )
         val requestCode = 200
         requestPermissions(permissions, requestCode)

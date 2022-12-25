@@ -27,6 +27,10 @@ class ImageManager private constructor(){
         }
     }
 
+    fun addImage(image: Image) {
+        imageList.add(image)
+    }
+
     fun getList(): ArrayList<Image> {
         return imageList
     }

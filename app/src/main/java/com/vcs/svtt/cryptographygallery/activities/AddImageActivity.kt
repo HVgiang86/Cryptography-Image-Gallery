@@ -2,6 +2,7 @@ package com.vcs.svtt.cryptographygallery.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -9,8 +10,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.vcs.svtt.cryptographygallery.R
+import com.vcs.svtt.cryptographygallery.cryptography.CryptographyHelper
+import com.vcs.svtt.cryptographygallery.model.Image
+import com.vcs.svtt.cryptographygallery.model.ImageManager
 import com.vcs.svtt.cryptographygallery.utils.PathUtil
 import kotlinx.android.synthetic.main.activity_add_image.*
 import kotlinx.android.synthetic.main.activity_add_image.view.*
@@ -32,6 +37,7 @@ class AddImageActivity : AppCompatActivity() {
     private var sha1Check = false
     private var sha512Check = false
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_image)
@@ -80,6 +86,7 @@ class AddImageActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -149,7 +156,13 @@ class AddImageActivity : AppCompatActivity() {
         preview_iv.visibility = View.GONE
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun encryptImage() {
+        val imageFile = File(imagePath)
+        val name = imageFile.name
+        val image = Image(name, imagePath)
+        ImageManager.getInstance().addImage(image)
 
+        CryptographyHelper.encrypt(image,CryptographyHelper.AES or CryptographyHelper.DES)
     }
 }
