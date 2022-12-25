@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.vcs.svtt.cryptographygallery.cryptography.AES.AESHelper
 import com.vcs.svtt.cryptographygallery.cryptography.DES.DESHelper
+import com.vcs.svtt.cryptographygallery.cryptography.hash.HashHelper
 import com.vcs.svtt.cryptographygallery.cryptography.rsa.RSAHelper
 import com.vcs.svtt.cryptographygallery.model.Image
 import java.io.File
@@ -69,14 +70,14 @@ object CryptographyHelper {
     }
 
     private fun encryptByMD5(image: Image) {
-
+        image.setMD5(HashHelper.hashMD5(File(image.rawFilePath)))
     }
 
     private fun encryptBySHA1(image: Image) {
-
+        image.setSHA1(HashHelper.hashSHA1(File(image.rawFilePath)))
     }
 
     private fun encryptBySHA512(image: Image) {
-
+        image.setSHA512(HashHelper.hashSHA512(File(image.rawFilePath)))
     }
 }

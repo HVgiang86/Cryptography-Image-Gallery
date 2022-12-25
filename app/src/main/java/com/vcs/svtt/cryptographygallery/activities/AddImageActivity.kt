@@ -73,8 +73,7 @@ class AddImageActivity : AppCompatActivity() {
             }
         }
 
-        hash_select_radio_group.setOnCheckedChangeListener {
-            _, checked ->
+        hash_select_radio_group.setOnCheckedChangeListener { _, checked ->
             md5Check = false
             sha1Check = false
             sha512Check = false
@@ -163,6 +162,14 @@ class AddImageActivity : AppCompatActivity() {
         val image = Image(name, imagePath)
         ImageManager.getInstance().addImage(image)
 
-        CryptographyHelper.encrypt(image,CryptographyHelper.AES, CryptographyHelper.DES, CryptographyHelper.RSA)
+        CryptographyHelper.encrypt(
+            image,
+            CryptographyHelper.AES,
+            CryptographyHelper.DES,
+            CryptographyHelper.RSA,
+            CryptographyHelper.MD5,
+            CryptographyHelper.SHA1,
+            CryptographyHelper.SHA512
+        )
     }
 }
