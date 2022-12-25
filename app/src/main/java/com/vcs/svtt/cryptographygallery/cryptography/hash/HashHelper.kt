@@ -2,11 +2,7 @@ package com.vcs.svtt.cryptographygallery.cryptography.hash
 
 import android.util.Log
 import com.vcs.svtt.cryptographygallery.cryptography.CryptographyHelper
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
 import java.security.MessageDigest
 
 object HashHelper {
@@ -52,30 +48,30 @@ object HashHelper {
         return hashedFile
     }
 
-    fun hashMD5(file: File):String {
+    fun hashMD5(file: File): String {
         val hashedFile = createFile(file, MD5)
         val data = getFileData(file)
         val md = MessageDigest.getInstance(MD5)
         val output = md.digest(data)
-        writeHashedToFile(hashedFile,output)
+        writeHashedToFile(hashedFile, output)
         return hashedFile.path
     }
 
-    fun hashSHA1(file: File):String {
+    fun hashSHA1(file: File): String {
         val hashedFile = createFile(file, SHA1)
         val data = getFileData(file)
         val md = MessageDigest.getInstance(SHA1)
         val output = md.digest(data)
-        writeHashedToFile(hashedFile,output)
+        writeHashedToFile(hashedFile, output)
         return hashedFile.path
     }
 
-    fun hashSHA512(file: File):String {
+    fun hashSHA512(file: File): String {
         val hashedFile = createFile(file, SHA512)
         val data = getFileData(file)
         val md = MessageDigest.getInstance(SHA512)
         val output = md.digest(data)
-        writeHashedToFile(hashedFile,output)
+        writeHashedToFile(hashedFile, output)
         return hashedFile.path
     }
 

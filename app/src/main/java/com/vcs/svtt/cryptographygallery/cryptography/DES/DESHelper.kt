@@ -12,10 +12,23 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * This code defines an object called DESHelper that provides functions for encrypting and decrypting files using the DES (Data Encryption Standard) algorithm
+ * The initKeyAndIV function is responsible for initializing the secret key and initialization vector (IV) used in the DES encryption process
+ * The encrypt function takes in a File object and returns the path to the encrypted file
+ * The decrypt function takes in a File object and returns the path to the decrypted file
+ */
 object DESHelper {
     private var ready = false
     private lateinit var key: SecretKey
     private lateinit var iv: ByteArray
+
+    /**
+     * Constants for file paths and encryption details
+     * ready: flag to check if the key and IV have been initialized
+     * key: secret key for DES encryption
+     * iv: initialization vector for DES encryption
+     */
 
     private const val TAG = "DES TAG"
     private const val DES_DIRECTORY = "DES"
@@ -31,32 +44,34 @@ object DESHelper {
     private const val KEY_SIZE = 56
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    // Initialize the key and IV by either creating new ones or loading them from a file
     private fun initKeyAndIV() {
-        if (!ready) {
-            val directory = makeDirectory()
-            val keyDirectory = File(directory, DES_KEY_DIRECTORY)
-            if (!keyDirectory.exists()) keyDirectory.mkdirs()
-            else Log.d(TAG, "DIREC: ${keyDirectory.path}")
+        // Return immediately if the key and IV have already been initialized
+        if (ready) return
 
-            if (keyDirectory.exists()) Log.d(TAG, "create dir successfully")
-            Log.d(TAG, "DIREC: ${keyDirectory.path}")
-            val keyFile = File(keyDirectory, KEY_FILE_PATH)
-            val ivFile = File(keyDirectory, IV_FILE_PATH)
+        val directory = makeDirectory()
+        val keyDirectory = File(directory, DES_KEY_DIRECTORY)
+        if (!keyDirectory.exists()) keyDirectory.mkdirs()
+        else Log.d(TAG, "DIRECT: ${keyDirectory.path}")
 
-            if (needToCreateNewKeyAndIV(keyFile, ivFile)) {
-                keyFile.createNewFile()
-                ivFile.createNewFile()
+        if (keyDirectory.exists()) Log.d(TAG, "create dir successfully")
+        Log.d(TAG, "DIRECT: ${keyDirectory.path}")
+        val keyFile = File(keyDirectory, KEY_FILE_PATH)
+        val ivFile = File(keyDirectory, IV_FILE_PATH)
 
-                createNewKeyAndIV()
-                saveKeyAndIVToFile(keyFile, ivFile)
-                Log.d(TAG, "init key and iv")
+        if (needToCreateNewKeyAndIV(keyFile, ivFile)) {
+            keyFile.createNewFile()
+            ivFile.createNewFile()
 
-            } else loadKeyAndIVFromFile(keyFile, ivFile)
+            createNewKeyAndIV()
+            saveKeyAndIVToFile(keyFile, ivFile)
+            Log.d(TAG, "init key and iv")
+        } else loadKeyAndIVFromFile(keyFile, ivFile)
 
-            ready = true
-        }
+        ready = true
     }
 
+    // Check if new key and IV need to be created
     private fun needToCreateNewKeyAndIV(keyFile: File, ivFile: File): Boolean {
         return (!keyFile.exists() || !ivFile.exists()) || keyFile.length() == (0).toLong() || ivFile.length() == (EXPECTED_IV_LENGTH).toLong()
     }
@@ -105,8 +120,8 @@ object DESHelper {
     private fun makeDirectory(): File {
         val directory = File(CryptographyHelper.DIRECTORY, DES_DIRECTORY)
         if (!directory.exists()) directory.mkdirs()
-        else Log.d(TAG, "DIREC: ${directory.path}")
-        Log.d(TAG, "DIREC: ${directory.path}")
+        else Log.d(TAG, "DIRECT: ${directory.path}")
+        Log.d(TAG, "DIRECT: ${directory.path}")
         return directory
     }
 
@@ -116,12 +131,12 @@ object DESHelper {
 
         Log.d(TAG, "encrypting")
 
+        // Create the necessary directories and files if they don't already exist
         val directory = makeDirectory()
         if (!rawFile.isFile) return ""
 
-        //calculate file name
+        // Calculate the name of the encrypted file
         val rawFileName = rawFile.name
-        //add prefix DES_encrypted_
         val encryptedFileName = DES_ENCRYPTED_FILE_PREFIX + rawFileName + ENCRYPTED_FILE_SUBFIX
 
         val encryptedFile = File(directory, encryptedFileName)
@@ -129,6 +144,7 @@ object DESHelper {
 
         Log.d(TAG, "all files are exist or created!")
 
+        // Read the raw file into a byte array
         val fis = FileInputStream(rawFile)
         val bis = BufferedInputStream(fis)
         val fos = FileOutputStream(encryptedFile)
@@ -138,6 +154,7 @@ object DESHelper {
         bis.read(rawData)
         bis.close()
 
+        // Create a cipher object and initialize it for encryption
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, key, IvParameterSpec(iv))
 
@@ -172,8 +189,7 @@ object DESHelper {
         val decryptedFileName = calculateDecryptedFileName(encryptedFileName)
 
         Log.d(
-            TAG,
-            "Encrypted FILE NAME: $encryptedFileName\nDecrypted File name: $decryptedFileName"
+            TAG, "Encrypted FILE NAME: $encryptedFileName\nDecrypted File name: $decryptedFileName"
         )
 
 
@@ -202,10 +218,10 @@ object DESHelper {
         return decryptedFile.path
     }
 
-    private fun parseFileExt(path: String): String {
+    /*private fun parseFileExt(path: String): String {
         val s: String
         val i = path.lastIndexOf(".")
         s = path.substring(i + 1)
         return s
-    }
+    }*/
 }

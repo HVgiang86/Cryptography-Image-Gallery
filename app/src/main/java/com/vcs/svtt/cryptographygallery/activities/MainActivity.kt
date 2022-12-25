@@ -1,12 +1,10 @@
 package com.vcs.svtt.cryptographygallery.activities
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
@@ -24,15 +22,13 @@ import com.vcs.svtt.cryptographygallery.fragments.ViewImageFragment
 import com.vcs.svtt.cryptographygallery.model.ImageManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
-import java.io.File
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+class MainActivity : AppCompatActivity(){
     companion object {
 
         const val TAG = "CRYPTOGRAPHY APP"
-        private const val IMAGE_LOADER_ID = 1
         const val ADD_IMAGE_REQUEST_CODE = 101
     }
 
@@ -50,16 +46,6 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
             askPermissions()
         }
 
-        /*val directory = File("/storage/emulated/0/Download/Cryptography gallery")
-        if (!directory.exists()) {
-            val values = ContentValues()
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/Cryptography gallery/")
-            contentResolver.insert(MediaStore.Files.getContentUri("external"), values)
-        }*/
-
-
-        //supportLoaderManager.initLoader(IMAGE_LOADER_ID, null, this)
-
         fab.setOnClickListener {
             openAddImageActivity()
         }
@@ -75,6 +61,15 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
                 .addToBackStack(null).commit()
         }
 
+        prepareRecyclerView()
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            prepareRecyclerView()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,41 +129,6 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         adapter.notifyDataSetChanged()
     }
 
-    override fun onCreateLoader(p0: Int, p1: Bundle?): Loader<Cursor> {
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val projection =
-            arrayOf(MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-        val selection: String? = null     //Selection criteria
-        val selectionArgs = arrayOf<String>()  //Selection criteria
-        val sortOrder: String? = null
-
-        return CursorLoader(
-            this.applicationContext, uri, projection, selection, selectionArgs, sortOrder
-        )
-    }
-
-    override fun onLoadFinished(p0: Loader<Cursor>, cursor: Cursor?) {
-        cursor?.let {
-            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-
-            while (it.moveToNext()) {
-
-                loading_tv.visibility = TextView.GONE
-                listOfAllImages.add(it.getString(columnIndexData))
-                Log.d(TAG, "Load finished!")
-
-                Log.d(TAG, "loaded ${listOfAllImages.size} image(s)")
-                listOfAllImages.forEach { e -> Log.d(TAG, "image $e") }
-            }
-
-            prepareRecyclerView()
-        }
-    }
-
-    override fun onLoaderReset(p0: Loader<Cursor>) {
-        TODO("Not yet implemented")
-    }
-
 
     //request external memory permission
     private fun shouldAskPermissions(): Boolean {
@@ -200,6 +160,5 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     override fun onDestroy() {
         super.onDestroy()
-        supportLoaderManager.destroyLoader(IMAGE_LOADER_ID)
     }
 }

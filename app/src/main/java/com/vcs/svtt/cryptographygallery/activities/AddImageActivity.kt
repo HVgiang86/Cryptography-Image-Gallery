@@ -153,6 +153,17 @@ class AddImageActivity : AppCompatActivity() {
         preview_panel_tv.visibility = View.GONE
         confirm_button.visibility = View.GONE
         preview_iv.visibility = View.GONE
+        aes_checkbox.isChecked = false
+        rsa_checkbox.isChecked = false
+        des_checkbox.isChecked = false
+        hash_select_radio_group.clearCheck()
+        hash_checkbox.isChecked = false
+        aesCheck = false
+        rsaCheck = false
+        desCheck = false
+        md5Check = false
+        sha1Check = false
+        sha512Check = false
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -162,14 +173,19 @@ class AddImageActivity : AppCompatActivity() {
         val image = Image(name, imagePath)
         ImageManager.getInstance().addImage(image)
 
-        CryptographyHelper.encrypt(
-            image,
-            CryptographyHelper.AES,
-            CryptographyHelper.DES,
-            CryptographyHelper.RSA,
-            CryptographyHelper.MD5,
-            CryptographyHelper.SHA1,
-            CryptographyHelper.SHA512
-        )
+        var selectedAlgorithm = 0
+        if (aesCheck) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.AES
+        if (desCheck) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.DES
+        if (rsaCheck) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.RSA
+        if (md5Check) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.MD5
+        if (sha1Check) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.SHA1
+        if (sha512Check) selectedAlgorithm = selectedAlgorithm or CryptographyHelper.SHA512
+
+        Log.d(TAG, "Algorithm: $selectedAlgorithm")
+        CryptographyHelper.encrypt(image, selectedAlgorithm)
+
+        Toast.makeText(this,"Encrypt your photo successfully!",Toast.LENGTH_SHORT).show()
+        setResult(RESULT_OK)
+        finish()
     }
 }

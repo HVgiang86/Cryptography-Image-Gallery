@@ -10,7 +10,6 @@ import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
-import java.security.spec.KeySpec
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -21,6 +20,8 @@ import javax.crypto.spec.SecretKeySpec
 
 
 /**
+ * This code appears to be a helper class for performing RSA and AES encryption/decryption on files.
+ * It has several constants defined for file names and directory names, as well as various parameters such as key sizes and initialization vectors
  * encrypt data with aes then encrypt aes's key by rsa public key
  * decrypt aes's key with private key then decrypt data
  */
@@ -160,7 +161,7 @@ object RSAHelper {
 
             } else {
                 decryptAESKey(keyFile, ivFile)
-                Log.d(TAG,"key and iv has loaded from file")
+                Log.d(TAG, "key and iv has loaded from file")
             }
 
             readyDataKey = true
