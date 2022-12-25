@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.vcs.svtt.cryptographygallery.cryptography.CryptographyHelper
+import com.vcs.svtt.cryptographygallery.cryptography.rsa.RSAHelper
 import java.io.*
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -51,7 +52,10 @@ object AESHelper {
                 saveKeyAndIVToFile(keyFile, ivFile)
                 Log.d(TAG, "init key and iv")
 
-            } else loadKeyAndIVFromFile(keyFile, ivFile)
+            } else  {
+                loadKeyAndIVFromFile(keyFile, ivFile)
+                Log.d(TAG,"key and iv has loaded from file")
+            }
 
             ready = true
         }

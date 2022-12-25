@@ -163,6 +163,6 @@ class AddImageActivity : AppCompatActivity() {
         val image = Image(name, imagePath)
         ImageManager.getInstance().addImage(image)
 
-        CryptographyHelper.encrypt(image,CryptographyHelper.AES or CryptographyHelper.DES)
+        CryptographyHelper.encrypt(image,CryptographyHelper.AES, CryptographyHelper.DES, CryptographyHelper.RSA)
     }
 }

@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.vcs.svtt.cryptographygallery.cryptography.AES.AESHelper
 import com.vcs.svtt.cryptographygallery.cryptography.DES.DESHelper
+import com.vcs.svtt.cryptographygallery.cryptography.rsa.RSAHelper
 import com.vcs.svtt.cryptographygallery.model.Image
 import java.io.File
 
@@ -57,11 +58,14 @@ object CryptographyHelper {
     private fun encryptByDES(image: Image) {
         val filePath = image.rawFilePath
         image.setAES(DESHelper.encrypt(File(filePath)))
-        DESHelper.decrypt(File(image.aesFilePath))
+        DESHelper.decrypt(File(image.desFilePath))
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun encryptByRSA(image: Image) {
-
+        val filePath = image.rawFilePath
+        image.setRSA(RSAHelper.encrypt(File(filePath)))
+        RSAHelper.decrypt(File(image.rsaFilePath))
     }
 
     private fun encryptByMD5(image: Image) {

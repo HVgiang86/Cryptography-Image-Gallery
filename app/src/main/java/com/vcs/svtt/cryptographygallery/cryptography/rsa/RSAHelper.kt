@@ -10,6 +10,7 @@ import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
+import java.security.spec.KeySpec
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -37,7 +38,9 @@ object RSAHelper {
     private const val RSA_DECRYPTED_FILE_PREFIX = "AES_decrypted_"
     private const val ENCRYPTED_FILE_SUBFIX = ".dat"
     private const val RSA = "RSA"
+    private const val AES = "AES"
     private const val TRANSFORMATION = "AES/CBC/PKCS5Padding"
+    private const val RSA_TRANSFORMATION = "RSA/ECB/PKCS1Padding"
     private const val DATA_KEY_FILE_PATH = "data_key.aes"
     private const val PRIVATE_KEY_FILE_PATH = "private_key.rsa"
     private const val PUBLIC_KEY_FILE_PATH = "public_key.rsa"
@@ -69,7 +72,7 @@ object RSAHelper {
 
             } else loadRSAKeyPairFromFile(publicFile, privateFile)
 
-            readyDataKey = true
+            readyRSAKey = true
         }
     }
 
@@ -152,10 +155,13 @@ object RSAHelper {
                 ivFile.createNewFile()
 
                 createNewKeyAndIV()
-                saveKeyAndIVToFile(keyFile, ivFile)
+                encryptAESKey(keyFile, ivFile)
                 Log.d(TAG, "init key and iv")
 
-            } else loadKeyAndIVFromFile(keyFile, ivFile)
+            } else {
+                decryptAESKey(keyFile, ivFile)
+                Log.d(TAG,"key and iv has loaded from file")
+            }
 
             readyDataKey = true
         }
@@ -166,43 +172,12 @@ object RSAHelper {
     }
 
     private fun createNewKeyAndIV() {
-        val keygen = KeyGenerator.getInstance(RSA)
+        val keygen = KeyGenerator.getInstance(AES)
         keygen.init(DATA_KEY_SIZE)
         key = keygen.generateKey()
 
         iv = ByteArray(EXPECTED_IV_LENGTH)
         SecureRandom().nextBytes(iv)
-    }
-
-    private fun saveKeyAndIVToFile(keyFile: File, ivFile: File) {
-        var bos: BufferedOutputStream
-        var fos = FileOutputStream(keyFile)
-        bos = BufferedOutputStream(fos)
-        bos.write(key.encoded)
-        bos.close()
-
-        fos = FileOutputStream(ivFile)
-        bos = BufferedOutputStream(fos)
-        bos.write(iv)
-        bos.close()
-    }
-
-    private fun loadKeyAndIVFromFile(keyFile: File, ivFile: File) {
-        var bis: BufferedInputStream
-        var fis = FileInputStream(keyFile)
-
-        bis = BufferedInputStream(fis)
-        val keyByte = ByteArray(bis.available())
-        bis.read(keyByte)
-        key = SecretKeySpec(keyByte, 0, keyByte.size, RSA)
-        bis.close()
-
-        fis = FileInputStream(ivFile)
-        bis = BufferedInputStream(fis)
-        iv = ByteArray(bis.available())
-        bis.read(iv)
-        bis.close()
-        Log.d(TAG, "load key and iv")
     }
 
     private fun makeDirectory(): File {
@@ -213,10 +188,44 @@ object RSAHelper {
         return directory
     }
 
+    private fun encryptAESKey(keyFile: File, ivFile: File) {
+        encryptWithRSAKey(keyFile, key.encoded)
+        encryptWithRSAKey(ivFile, iv)
+    }
+
+    private fun decryptAESKey(keyFile: File, ivFile: File) {
+        key = SecretKeySpec(decryptWithRSAKey(keyFile), AES)
+        iv = decryptWithRSAKey(ivFile)
+    }
+
+    private fun encryptWithRSAKey(file: File, data: ByteArray) {
+        val fos = FileOutputStream(file)
+        val bos = BufferedOutputStream(fos)
+
+        val cipher = Cipher.getInstance(RSA_TRANSFORMATION)
+        cipher.init(Cipher.ENCRYPT_MODE, keyPair.public)
+        val encryptedBytes = cipher.doFinal(data)
+        bos.write(encryptedBytes)
+        bos.close()
+    }
+
+    private fun decryptWithRSAKey(file: File): ByteArray {
+        val fis = FileInputStream(file)
+        val bis = BufferedInputStream(fis)
+        val dataBytes = ByteArray(bis.available())
+        bis.read(dataBytes)
+
+        val cipher = Cipher.getInstance(RSA_TRANSFORMATION)
+        cipher.init(Cipher.DECRYPT_MODE, keyPair.private)
+        val decryptedBytes = cipher.doFinal(dataBytes)
+        bis.close()
+        return decryptedBytes
+    }
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun encrypt(rawFile: File): String {
-        initKeyAndIV()
         initRSAKeyPair()
+        initKeyAndIV()
 
         Log.d(TAG, "encrypting")
 
@@ -265,6 +274,7 @@ object RSAHelper {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun decrypt(encryptedFile: File): String {
+        initRSAKeyPair()
         initKeyAndIV()
 
         Log.d(TAG, "Decrypting")
