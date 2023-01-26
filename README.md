@@ -1,6 +1,6 @@
 # Thư viện ảnh mã hoá Cryptography Image Gallery!
 
-<img src="https://imgur.com/428c00b2-af96-475a-934b-f55a93b51125" align="left"
+<img src="https://i.imgur.com/VMTIUCj.png" align="left"
 width="200" hspace="10" vspace="10">
 
 Cryptography Image Gallery là ứng dụng cho phép bạn mã hoá các bức ảnh bằng các thuật toán mã hoá mạnh mẽ: AES, DES, RSA.
@@ -59,6 +59,7 @@ width="200" hspace="10" vspace="10">
 width="200" hspace="10" vspace="10">
 <img src="./Screenshot/4.jpg" align="left"
 width="200" hspace="10" vspace="10">
+- 
 <img src="./Screenshot/5.jpg" align="left"
 width="200" hspace="10" vspace="10">
 <img src="./Screenshot/6.jpg" align="left"
