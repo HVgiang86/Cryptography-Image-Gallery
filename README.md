@@ -63,8 +63,6 @@ width="200" hspace="10" vspace="10">
 <img src="./Screenshot/4.jpg" align="left"
 width="200" hspace="10" vspace="10">
   
-- screenshot
-  
 <img src="./Screenshot/5.jpg" align="left"
 width="200" hspace="10" vspace="10">
 <img src="./Screenshot/6.jpg" align="left"
