@@ -9,7 +9,9 @@ Hay thực hiện hash các bức ảnh thành dạng Message Digest với hàm 
 
 Ngoài ra có khả năng quản lý các bức ảnh đã được mã hoá.
   
+  
 # Contributors
+
 
 # Authors
  - [@Hoàng Văn Giang](https://github.com/HVgiang86/student-management-utt)
@@ -59,7 +61,9 @@ width="200" hspace="10" vspace="10">
 width="200" hspace="10" vspace="10">
 <img src="./Screenshot/4.jpg" align="left"
 width="200" hspace="10" vspace="10">
+  
 - 
+  
 <img src="./Screenshot/5.jpg" align="left"
 width="200" hspace="10" vspace="10">
 <img src="./Screenshot/6.jpg" align="left"
